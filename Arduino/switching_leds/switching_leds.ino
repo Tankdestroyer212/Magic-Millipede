@@ -15,8 +15,14 @@ Adafruit_NeoPixel interior(NUM_LEDS, INT_LED_PIN, NEO_RGB + NEO_KHZ800);
 SoftwareSerial mp3Serial(MP3_RX, MP3_TX);
 DFRobotDFPlayerMini player;
 
-bool redActive = false;
-unsigned long redStartTime = 0;
+enum State {
+  DEFAULT_STATE,
+  PRESENTATION_STATE
+};
+
+State currentState = DEFAULT_STATE;
+
+unsigned long stateStartTime = 0;
 bool lastButtonState = HIGH;
 
 void setColor(Adafruit_NeoPixel &ring, int r, int g, int b) {
@@ -26,42 +32,55 @@ void setColor(Adafruit_NeoPixel &ring, int r, int g, int b) {
   ring.show();
 }
 
+void enterDefaultState() {
+  currentState = DEFAULT_STATE;
+  setColor(exterior, 255, 0, 0); // Exterior green
+  setColor(interior, 0, 255, 0); // Interior red
+}
+
+void enterPresentationState() {
+  currentState = PRESENTATION_STATE;
+  stateStartTime = millis();
+  setColor(exterior, 0, 255, 0); // Exterior red
+  setColor(interior, 0, 0, 0);   // Interior off
+  player.play(1);
+}
+
 void setup() {
   pinMode(BUTTON_PIN, INPUT_PULLUP);
 
   exterior.begin();
   exterior.show();
-  setColor(exterior, 255, 0, 0); // Starts green
-
   interior.begin();
   interior.show();
-  setColor(interior, 0, 255, 0); // Starts red
 
   mp3Serial.begin(9600);
   if (player.begin(mp3Serial)) {
     player.volume(25);
   }
+
+  enterDefaultState(); // Start in default state
 }
 
 void loop() {
   bool currentButtonState = digitalRead(BUTTON_PIN);
   unsigned long now = millis();
 
-  if (redActive) {
-    if (now - redStartTime >= 60000) {
-      redActive = false;
-      setColor(exterior, 255, 0, 0);
-      setColor(interior, 0, 255, 0);
-    }
-  }
-  else {
-    if (currentButtonState == LOW && lastButtonState == HIGH) {
-      redActive = true;
-      redStartTime = now;
-      setColor(exterior, 0, 255, 0);
-      setColor(interior, 0, 0, 0);
-      player.play(1);
-    }
+  switch (currentState) {
+
+      case DEFAULT_STATE:
+        // Wait for button press to transition
+        if (currentButtonState == LOW && lastButtonState == HIGH) {
+          enterPresentationState();
+        }
+        break;
+
+      case PRESENTATION_STATE:
+        // Button is locked — just wait for timer
+        if (now - stateStartTime >= 10000) {
+          enterDefaultState();
+        }
+        break;
   }
 
   lastButtonState = currentButtonState;
