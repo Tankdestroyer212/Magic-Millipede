@@ -21,3 +21,9 @@
 #define MP3_RX        3
 #define MP3_TX        2
 ```
+Here are the dependencies/libraries needed:
+```
+#include <Adafruit_NeoPixel.h>
+#include <SoftwareSerial.h>
+#include <DFRobotDFPlayerMini.h>
+```
