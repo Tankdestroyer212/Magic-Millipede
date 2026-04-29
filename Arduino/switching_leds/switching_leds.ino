@@ -55,8 +55,10 @@ void setup() {
   interior.show();
 
   mp3Serial.begin(9600);
+  delay(1000);
   if (player.begin(mp3Serial)) {
-    player.volume(25);
+    // player.play(1);
+    player.volume(20);
   }
 
   enterDefaultState(); // Start in default state
