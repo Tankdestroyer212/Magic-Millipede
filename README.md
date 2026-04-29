@@ -13,3 +13,9 @@
   - Everything shares the breadboard.
   - The DFPlayer does have very specific wiring, so please refer to an online guide for wiring.
   - The PIN number CAN be changed, but you would have to change the PIN numbers in the code as well. If you want to follow the code's PINs, here they are: 
+#define EXT_LED_PIN   6
+#define INT_LED_PIN   5
+#define NUM_LEDS      7
+#define BUTTON_PIN    7
+#define MP3_RX        3
+#define MP3_TX        2
