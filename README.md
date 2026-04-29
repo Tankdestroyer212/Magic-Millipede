@@ -27,3 +27,5 @@ Here are the dependencies/libraries needed:
 #include <SoftwareSerial.h>
 #include <DFRobotDFPlayerMini.h>
 ```
+# Design Notes
+- This code used AI in the process while cleaning up the code. Since C++ is new to me, I ran into many issues while coding and was slowly losing time. AI helped clean up the code and assist in building the state machine, which is also a totally new concept I learned last minute. I do not normally use AI, as I want to challenge myself and learn new things. If there is anything that should/needs cleaning up, please let me know so I can use it to grow and improve!
