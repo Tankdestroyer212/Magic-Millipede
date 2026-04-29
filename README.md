@@ -10,4 +10,6 @@
 - I have designed the code in a way that it changes based on the state it is in. There are 2 states, DEFAULT_STATE and PRESENTATION_STATE. Both are dedicated functions that handle everything that happens when you enter the state. This means the changing of the lights, sound, and runtime. switch(currentState) in loop() is the heart of the state machine. It checks which state you are in and runs the logic specific to the state. Within PRESENTATION_STATE, the button simply does not exist, so the presentation will have to run through the full narration before resetting.
 # Getting Started
 - This design is not very complicated to run. The Arduino must be plugged into the breadboard with cables going to 5V (+) and GND (-). Here are a few things to keep in mind as well:
-  - sdsd
+  - Everything shares the breadboard.
+  - The DFPlayer does have very specific wiring, so please refer to an online guide for wiring.
+  - The PIN number CAN be changed, but you would have to change the PIN numbers in the code as well. If you want to follow the code's PINs, here they are: 
